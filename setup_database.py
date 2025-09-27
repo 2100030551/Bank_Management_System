@@ -1,40 +1,34 @@
 #!/usr/bin/env python3
-"""
-Database Setup Script for Bank Management System
-"""
+
 import mysql.connector
 from mysql.connector import Error
 
 
 def create_database():
-    """Create the database and user if they don't exist"""
     try:
-        # Connect to MySQL without specifying a database
         connection = mysql.connector.connect(
             host='localhost',
-            user="username",  # Replace with your MySQL username
-            password="Yourpassword",  # Replace with your MySQL password
+            user="username",
+            password="Yourpassword",
         )
 
         if connection.is_connected():
             cursor = connection.cursor()
 
-            # Create database if it doesn't exist
             cursor.execute("CREATE DATABASE IF NOT EXISTS bank_management_system")
             print("Database created or already exists")
 
-            # Create user if it doesn't exist
-            try:
-                cursor.execute("CREATE USER IF NOT EXISTS 'bank_user'@'localhost' IDENTIFIED BY 'bank_password'")
-                print("User created or already exists")
-            except Error as e:
-                print(f"Note: {e}")
+            cursor.execute("SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = 'bank_user' AND host = 'localhost')")
+            user_exists = cursor.fetchone()[0]
+            if not user_exists:
+                cursor.execute("CREATE USER 'bank_user'@'localhost' IDENTIFIED BY 'bank_password'")
+                print("User 'bank_user' created")
+            else:
+                print("User 'bank_user' already exists")
 
-            # Grant privileges
             cursor.execute("GRANT ALL PRIVILEGES ON bank_management_system.* TO 'bank_user'@'localhost'")
             print("Privileges granted")
 
-            # Flush privileges
             cursor.execute("FLUSH PRIVILEGES")
             print("Privileges flushed")
 
