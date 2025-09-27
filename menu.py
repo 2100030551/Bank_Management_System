@@ -7,6 +7,6 @@ def display_menu():
     print("3. Deposit Money")
     print("4. Withdraw Money")
     print("5. View Transactions")
-    print("6. Transfer Money")  # New option for transferring money
+    print("6. Transfer Money")  
     print("7. Exit")
     print("===============================")
