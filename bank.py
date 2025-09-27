@@ -3,13 +3,12 @@ from menu import display_menu
 from user_table import UserTable
 from transaction_table import TransactionTable
 
-# Establish the connection to the MySQL database
 def create_connection():
     connection = mysql.connector.connect(
-        host="localhost",  # Your MySQL server (localhost if running locally)
-        user="username",  # Replace with your MySQL username
-        password="Yourpassword",  # Replace with your MySQL password
-        database="Your databasename"  # The database name you created (bank_db)
+        host="localhost",
+        user="username",
+        password="Yourpassword",
+        database="Your databasename"
     )
     return connection
 
@@ -23,7 +22,7 @@ def main():
         print("Welcome to the Bank Management System!")
         print("1. Login")
         print("2. Register")
-        print("0. Exit")  # Added option to exit at any point
+        print("0. Exit")
 
         choice = input("Please choose an option (1, 2, or 0 to exit): ")
 
@@ -31,27 +30,26 @@ def main():
             account_no = user_table.login()
             if account_no:
                 print("Login successful!")
-                break  # Exit the loop if login is successful
+                break
             else:
                 print("Email not found. Please try again or register.")
 
         elif choice == '2':
-            user_table.create_account()  # If user chooses to register
+            user_table.create_account()
             print("Registration successful! Please log in.")
-            account_no = user_table.login()  # Prompt the user to log in after registration
+            account_no = user_table.login()
             if account_no:
                 print("Login successful!")
-                break  # Exit the loop if login is successful
+                break
 
         elif choice == '0':
             print("Exiting the system. Goodbye!")
             connection.close()
-            return  # Exit the entire program
+            return
 
         else:
             print("Invalid choice. Please try again.")
 
-    # Once logged in, proceed to the menu options
     while True:
         display_menu()
 
@@ -68,7 +66,7 @@ def main():
         elif choice == '5':
             transaction_table.view_transactions(account_no)
         elif choice == '6':
-            transaction_table.transfer(account_no)  # Fund Transfer
+            transaction_table.transfer(account_no)
         elif choice == '7':
             print("Exiting system.")
             connection.close()
